@@ -11,12 +11,20 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151009061304) do
+ActiveRecord::Schema.define(version: 20151009141834) do
 
   create_table "carts", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
+
+  create_table "categories", force: :cascade do |t|
+    t.string  "name",        limit: 255
+    t.text    "description", limit: 65535
+    t.decimal "number",                    precision: 10
+  end
+
+  add_index "categories", ["number"], name: "index_categories_on_number", using: :btree
 
   create_table "deals", force: :cascade do |t|
     t.string "name",                 limit: 255
@@ -24,6 +32,15 @@ ActiveRecord::Schema.define(version: 20151009061304) do
     t.date   "valid_upto"
     t.string "max_allowed_discount", limit: 255
   end
+
+  create_table "departments", force: :cascade do |t|
+    t.string   "name",       limit: 255
+    t.datetime "created_at",             null: false
+    t.datetime "updated_at",             null: false
+    t.integer  "person_id",  limit: 4
+  end
+
+  add_index "departments", ["person_id"], name: "index_departments_on_person_id", using: :btree
 
   create_table "line_items", force: :cascade do |t|
     t.integer  "product_id", limit: 4
@@ -47,13 +64,24 @@ ActiveRecord::Schema.define(version: 20151009061304) do
     t.datetime "updated_at",               null: false
   end
 
+  create_table "people", force: :cascade do |t|
+    t.string   "name",       limit: 255
+    t.decimal  "age",                    precision: 10
+    t.datetime "created_at",                            null: false
+    t.datetime "updated_at",                            null: false
+  end
+
   create_table "products", force: :cascade do |t|
-    t.string   "title",       limit: 255
-    t.text     "description", limit: 65535
-    t.string   "image_url",   limit: 255
-    t.decimal  "price",                     precision: 8, scale: 2
-    t.datetime "created_at",                                        null: false
-    t.datetime "updated_at",                                        null: false
+    t.string   "title",           limit: 255
+    t.text     "description",     limit: 65535
+    t.string   "image_url",       limit: 255
+    t.decimal  "price",                         precision: 8,  scale: 2
+    t.datetime "created_at",                                                             null: false
+    t.datetime "updated_at",                                                             null: false
+    t.boolean  "enabled",                                                default: false
+    t.decimal  "line_item_count",               precision: 10,           default: 0
+    t.decimal  "discount_price",                precision: 8,  scale: 2
+    t.string   "permalink",       limit: 255
   end
 
   create_table "samples", force: :cascade do |t|
@@ -66,6 +94,7 @@ ActiveRecord::Schema.define(version: 20151009061304) do
     t.string   "password_digest", limit: 255
     t.datetime "created_at",                  null: false
     t.datetime "updated_at",                  null: false
+    t.string   "email",           limit: 255
   end
 
 end
