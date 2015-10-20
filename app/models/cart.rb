@@ -1,5 +1,7 @@
 class Cart < ActiveRecord::Base
-  has_many :line_items, dependent: :destroy
+  has_many :line_items, dependent: :destroy, after_add: :increment_line_items_count,
+  after_remove: :decrement_line_items_count
+  has_many :products, -> { where enabled: true }, through: :line_items
 
   def add_product(product_id)
     current_item = line_items.find_by(product_id: product_id)
@@ -13,6 +15,14 @@ class Cart < ActiveRecord::Base
 
   def total_price
     line_items.to_a.sum { |item| item.total_price }
+  end
+
+  def increment_line_items_count(cart)
+    self.line_items_count += 1
+  end
+
+  def decrement_line_items_count(cart)
+    self.line_items_count -= 1
   end
 
 end

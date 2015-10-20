@@ -7,7 +7,11 @@ class OrdersController < ApplicationController
   # GET /orders
   # GET /orders.json
   def index
-    @orders = Order.all
+    if session[:user_id]
+      @orders = Order.where(user_id: session[:user_id])
+    else
+      @orders = Order.all
+    end
   end
 
   # GET /orders/1
@@ -33,7 +37,9 @@ class OrdersController < ApplicationController
   # POST /orders.json
   def create
     @order = Order.new(order_params)
+    @order.user_id = session[:user_id]
     @order.add_line_items_from_cart(@cart)
+
 
     respond_to do |format|
       if @order.save

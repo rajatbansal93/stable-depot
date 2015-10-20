@@ -66,6 +66,17 @@ class UsersController < ApplicationController
       end
   end
 
+  def show_orders
+    @orders = Order.where(user_id: session[:user_id])
+    render "orders/index"
+  end
+
+  def show_line_items
+    @line_items =  User.find(session[:user_id]).line_items
+    @message = "Items that you have ordered"
+    render "line_items/index"
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_user

@@ -11,11 +11,12 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151014112110) do
+ActiveRecord::Schema.define(version: 20151016115026) do
 
   create_table "carts", force: :cascade do |t|
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at",                             null: false
+    t.datetime "updated_at",                             null: false
+    t.integer  "line_items_count", limit: 4, default: 0
   end
 
   create_table "categories", force: :cascade do |t|
@@ -62,7 +63,10 @@ ActiveRecord::Schema.define(version: 20151014112110) do
     t.string   "pay_type",   limit: 255
     t.datetime "created_at",               null: false
     t.datetime "updated_at",               null: false
+    t.integer  "user_id",    limit: 4
   end
+
+  add_index "orders", ["user_id"], name: "index_orders_on_user_id", using: :btree
 
   create_table "people", force: :cascade do |t|
     t.string   "name",       limit: 255
@@ -97,4 +101,5 @@ ActiveRecord::Schema.define(version: 20151014112110) do
     t.string   "email",           limit: 255
   end
 
+  add_foreign_key "orders", "users"
 end
