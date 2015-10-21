@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151016115026) do
+ActiveRecord::Schema.define(version: 20151020072600) do
 
   create_table "carts", force: :cascade do |t|
     t.datetime "created_at",                             null: false
@@ -20,12 +20,12 @@ ActiveRecord::Schema.define(version: 20151016115026) do
   end
 
   create_table "categories", force: :cascade do |t|
-    t.string  "name",        limit: 255
-    t.text    "description", limit: 65535
-    t.decimal "number",                    precision: 10
+    t.string   "name",               limit: 255
+    t.integer  "count",              limit: 4
+    t.integer  "parent_category_id", limit: 4
+    t.datetime "created_at",                     null: false
+    t.datetime "updated_at",                     null: false
   end
-
-  add_index "categories", ["number"], name: "index_categories_on_number", using: :btree
 
   create_table "deals", force: :cascade do |t|
     t.string "name",                 limit: 255
@@ -86,7 +86,10 @@ ActiveRecord::Schema.define(version: 20151016115026) do
     t.integer  "line_item_count", limit: 4,                             default: 0,     null: false
     t.decimal  "discount_price",                precision: 8, scale: 2
     t.string   "permalink",       limit: 255
+    t.integer  "category_id",     limit: 4
   end
+
+  add_index "products", ["category_id"], name: "index_products_on_category_id", using: :btree
 
   create_table "samples", force: :cascade do |t|
     t.string "name",        limit: 255
@@ -102,4 +105,5 @@ ActiveRecord::Schema.define(version: 20151016115026) do
   end
 
   add_foreign_key "orders", "users"
+  add_foreign_key "products", "categories"
 end

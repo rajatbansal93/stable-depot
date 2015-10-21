@@ -2,29 +2,10 @@
 
 
 <h1><%= heading %></h1>
-
-
-<table>
-  <thead>
-    <tr>
-      <th>Product</th>
-      <th>Price</th>
-      <th colspan="3"></th>
-    </tr>
-  </thead>
-
-  <tbody>
-    <% current_page_items.each do |line_item| %>
-      <tr>
-        <td><%= line_item.product.title %></td>
-        <td><%= line_item.product.price %></td>
-        <td><%= link_to 'Show', line_item %></td>
-        <td><%= link_to 'Edit', edit_line_item_path(line_item) %></td>
-        <td><%= link_to 'Destroy', line_item, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
+<%= render "line_items/line_items_table" %>
+<% total_pages.times do |page_number| %>
+  <%= link_to "#{page_number + 1}", line_items_users_path({page_number: page_number}), remote: true %>
+  <% end %>
 
 <br>
 

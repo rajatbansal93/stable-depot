@@ -3,7 +3,7 @@ class CreateCategories < ActiveRecord::Migration
     create_table :categories do |t|
       t.string :name
       t.integer :count
-      t.references :parent_comment
+      t.references :parent_category
 
       t.timestamps null: false
     end

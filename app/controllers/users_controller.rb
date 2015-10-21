@@ -71,10 +71,15 @@ class UsersController < ApplicationController
     render "orders/index"
   end
 
-  def show_line_items
+  def line_items
     @line_items =  User.find(session[:user_id]).line_items
     @message = "Items that you have ordered"
-    render "line_items/index"
+    @page_number = params[:page_number].to_i
+
+    respond_to do |format|
+      format.html {render "line_items/index"}
+      format.js
+    end
   end
 
   private

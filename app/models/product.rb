@@ -1,25 +1,26 @@
 class Product < ActiveRecord::Base
   has_many :line_items, dependent: :restrict_with_error
   has_many :carts, through: :line_items
+  belongs_to :category, autosave: true
 
   # before_destroy :ensure_not_referenced_by_any_line_item
-  validates :title, :description, :image_url, presence: true
-  validates :permalink, format: { with: /\A[^ ][a-zA-Z0-9\-]+\z/ }
-  validates :permalink, format: { with: /[^ ]/ }
-  validates_length_of :description, in: 5..10, tokenizer: ->(str) { str.scan(/\w+/) }
-  validates :price, numericality: {greater_than_or_equal_to: 0.01}, if: :is_price_empty?
-  validates :title, :permalink, uniqueness: true
-  validates_length_of :permalink, minimum: 3, tokenizer: ->(str) { str.split('-') }
-  validates :image_url, allow_blank: true, format: {
-    with:
-    %r{\.(gif|jpg|png)\Z}i,
-    message: 'must be a URL for GIF, JPG or PNG image.'
-  }
-  validates_each :image_url do |record, attr, value|
-    record.errors.add(attr, 'must end with .jpg') if
-    value !~ /[.jpg]\z/
-  end
-  validates :price, numericality: {greater_than_or_equal_to: :discount_price}
+  # validates :title, :description, :image_url, presence: true
+  # validates :permalink, format: { with: /\A[^ ][a-zA-Z0-9\-]+\z/ }
+  # validates :permalink, format: { with: /[^ ]/ }
+  # validates_length_of :description, in: 5..10, tokenizer: ->(str) { str.scan(/\w+/) }
+  # validates :price, numericality: {greater_than_or_equal_to: 0.01}, if: :is_price_empty?
+  # validates :title, :permalink, uniqueness: true
+  # validates_length_of :permalink, minimum: 3, tokenizer: ->(str) { str.split('-') }
+  # validates :image_url, allow_blank: true, format: {
+  #   with:
+  #   %r{\.(gif|jpg|png)\Z}i,
+  #   message: 'must be a URL for GIF, JPG or PNG image.'
+  # }
+  # validates_each :image_url do |record, attr, value|
+  #   record.errors.add(attr, 'must end with .jpg') if
+  #   value !~ /[.jpg]\z/
+  # end
+  # validates :price, numericality: {greater_than_or_equal_to: :discount_price}
 
   scope :enabled, -> { where(enabled: true) }
 
@@ -36,6 +37,8 @@ class Product < ActiveRecord::Base
     price == ""
   end
 
+  after_create :increment_count_in_cateogory
+
   def ensure_not_referenced_by_any_line_item
     if line_items.empty?
       return true
@@ -44,5 +47,14 @@ class Product < ActiveRecord::Base
       return false
     end
   end
+
+  protected
+    def increment_count_in_cateogory
+      Category.increment_counter(:count, category_id)
+      if (category.parent_category.present?)
+        Category.increment_counter(:count, category.parent_category_id)
+      end
+    end
+
 
 end

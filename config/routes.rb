@@ -10,7 +10,7 @@ Rails.application.routes.draw do
   resources :users do
     collection do
       get 'orders', to: :show_orders
-      get 'line_items', to: :show_line_items
+      get :line_items
     end
   end
 

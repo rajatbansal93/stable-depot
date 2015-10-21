@@ -1,0 +1,20 @@
+<table id="line_items">
+  <thead>
+    <tr>
+      <th>Product</th>
+      <th>Price</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+<tbody>
+    <% current_page_items(@page_number).each do |line_item| %>
+      <tr>
+        <td><%= line_item.product.title %></td>
+        <td><%= line_item.product.price %></td>
+        <td><%= link_to 'Show', line_item %></td>
+        <td><%= link_to 'Edit', edit_line_item_path(line_item) %></td>
+        <td><%= link_to 'Destroy', line_item, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+</tbody>
+</table>
