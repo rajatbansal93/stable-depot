@@ -1,1 +1,1 @@
-$("#line_items").html("<%= escape_javascript render 'line_items/line_items_table'%>");
+$("#line_items").html("<%= escape_javascript render 'line_items/line_items_table'%>, locals {product: Product.find(params[:product_id])}");

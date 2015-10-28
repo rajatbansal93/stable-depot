@@ -4,9 +4,7 @@
 
 <h1>Your Pragmatic Catalog</h1>
 
-<% cache ['store', Product.latest] do %>
   <% @products.each do |product| %>
-    <% cache ['entry', product] do %>
       <div class="entry">
         <%= image_tag(product.image_url) %>
         <h3><%= product.title %></h3>
@@ -14,8 +12,13 @@
         <div class="price_line">
           <span class="price"><%= number_to_currency(product.price) %></span>
           <%= button_to 'Add to Cart', line_items_path(product_id: product), remote: true %>
+          <span class="rating">
+          <% if session[:user_id] %>
+            <%= label_tag(:rating, "Rate Me") %>
+            <%= select_tag(:rating, options_for_select(0..5).to_s , class: "product_rating", :'data-product-id' => product.id) %>
+          <% end %>
+          <%= render partial: "rating", locals: {product: product} %>
+          </span>
           </div>
         </div>
-      <% end %>
     <% end %>
-<% end %>
