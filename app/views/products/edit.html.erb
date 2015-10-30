@@ -1,4 +1,17 @@
 <h1>Editing Product</h1>
+<table>
+  <tr>
+  <% @product.images.each do |image| %>
+  <td><%= image_tag(image.url, size: "100x100", :"data-image-id" => image.id) %></td>
+  <% end %>
+  </tr>
+  <tr>
+  <% @product.images.each do |image| %>
+  <td><a href="#" data-image-id= <%= image.id %> class="image_remove_links" >Remove</a></td>
+  <% end %>
+  </tr>
+
+</table>
 
 <%= render 'form' %>
 

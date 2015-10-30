@@ -1,12 +1,14 @@
 class User < ActiveRecord::Base
-  validates :name, presence: true, uniqueness: true
+  # validates :name, presence: true, uniqueness: true
   has_secure_password
-  after_destroy :ensure_an_admin_remains
-  validates :email, uniqueness: true
-  validates :email, format: { with: /.+@.+\..{2,3}/ }
+  # after_destroy :ensure_an_admin_remains
+  # validates :email, uniqueness: true
+  # validates :email, format: { with: /.+@.+\..{2,3}/ }
 
   has_many :orders, dependent: :destroy
   has_many :line_items, -> {includes :product}, through: :orders
+  has_one :address
+  accepts_nested_attributes_for :address
 
   after_destroy do |user|
     user.email != 'admin@depot.com'

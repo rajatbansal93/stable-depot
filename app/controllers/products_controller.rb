@@ -25,6 +25,9 @@ class ProductsController < ApplicationController
   # POST /products.json
   def create
     @product = Product.new(product_params)
+    unless params[:product][:picture].nil?
+      save_image()
+    end
 
     respond_to do |format|
       if @product.save
@@ -40,6 +43,9 @@ class ProductsController < ApplicationController
   # PATCH/PUT /products/1
   # PATCH/PUT /products/1.json
   def update
+    unless params[:product][:picture].nil?
+      save_image()
+    end
     respond_to do |format|
       if @product.update(product_params)
         format.html { redirect_to @product, notice: 'Product was successfully updated.' }
@@ -54,6 +60,7 @@ class ProductsController < ApplicationController
   # DELETE /products/1
   # DELETE /products/1.json
   def destroy
+    debugger
     @product.destroy
     respond_to do |format|
       format.html { redirect_to products_url, notice: 'Product was successfully destroyed.' }
@@ -72,7 +79,18 @@ class ProductsController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
+
+    def save_image
+      images = params[:product][:picture]
+      images.each do |image|
+        File.open(Rails.root.join('public','product_images', image.original_filename), 'wb') do |file|
+          file.write(image.read)
+        end
+        @image = @product.images.build(url: image.original_filename)
+      end
+
+    end
+
     def set_product
       @product = Product.find(params[:id])
     end
@@ -80,6 +98,6 @@ class ProductsController < ApplicationController
     # Never trust parameters from the scary internet, only allow the white list through.
     def product_params
       params.require(:product).permit(:title, :description, :image_url, :price,
-        :discount_price, :permalink, :enabled, :category_id)
+        :discount_price, :permalink, :enabled, :category_id, :picture)
     end
 end

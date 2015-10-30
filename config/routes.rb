@@ -18,6 +18,7 @@ Rails.application.routes.draw do
   resources :line_items
   resources :carts
   resources :cartes
+  resources :images
   get 'store/index'
 
   # get 'users/orders', to: 'users#abc'

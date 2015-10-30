@@ -29,9 +29,29 @@
       <%= f.label :password_confirmation, 'Confirm:' %>
       <%= f.password_field :password_confirmation, size: 40 %>
     </div>
-    <div class="actions">
+    Address:
+    <%= f.fields_for :address do |f| %>
+    <div class="field">
+      <%= f.label :state %><br>
+      <%= f.text_field :state %>
+    </div>
+    <div class="field">
+      <%= f.label :city %><br>
+      <%= f.text_field :city %>
+    </div>
+    <div class="field">
+      <%= f.label :country %><br>
+      <%= f.text_field :country %>
+    </div>
+    <div class="field">
+      <%= f.label :pincode %><br>
+      <%= f.text_field :pincode %>
+    </div>
+<% end %>
+  <div class="actions">
       <%= f.submit %>
     </div>
+
   </fieldset>
   <% end %>
 </div>

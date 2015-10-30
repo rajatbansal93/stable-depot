@@ -1,5 +1,4 @@
 <p id="notice"><%= notice %></p>
-
 <p>
   <strong>Title:</strong>
   <%= @product.title %>
@@ -19,6 +18,12 @@
   <strong>Price:</strong>
   <%= @product.price %>
 </p>
+
+<ul id="slideshow" style="list-style-type:none">
+  <% @product.images.each do |image| %>
+    <li><%= image_tag(image.url, size: "50x50")  %></li>
+  <% end %>
+</ul>
 
 <%= link_to 'Edit', edit_product_path(@product) %> |
 <%= link_to 'Back', products_path %>
