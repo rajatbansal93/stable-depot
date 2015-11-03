@@ -1,5 +1,12 @@
-<h1>OrderNotifier#recieved</h1>
-
-<p>
-  <%= @greeting %>, find me in app/views/order_notifier/recieved.html.erb
-</p>
+<h1>Your Order contains</h1>
+<table>
+  <% @products.includes(:images).each do |product| %>
+    <tr class="<%= cycle('list_line_odd', 'list_line_even') %>">
+      <td><%= product.title %></td>
+      <td><%= truncate(strip_tags(product.description), length: 50) %></td>
+      <td><%= product.price %></td>
+      <td> <%= image_tag attachments[product.images.first.url].url if product.images.length > 0 %></td>
+    </tr>
+  <% end %>
+</table>
+<br />

@@ -20,9 +20,9 @@
         <% end %>
 
         <ul>
-          <li><a href="http://www....">Home</a></li>
-          <li><a href="http://www..../faq">Questions</a></li>
-          <li><a href="http://www..../news">News</a></li>
+          <li><%= link_to "home", store_path %></li>
+          <li><%= link_to "Login", login_path %></li>
+          <li><%= link_to "Products", products_path %></li>
           <li><a href="http://www..../contact">Contact</a></li>
         </ul>
 
@@ -39,5 +39,11 @@
         <%= yield %>
       </div>
     </div>
+    <% if session[:site_hits] %>
+      <p> You have viewed this site <%= session[:site_hits] %> times </p>
+      <% end %>
+    <p> Your ip address is: <%= request.remote_ip %></p>
   </body>
+
 </html>
+

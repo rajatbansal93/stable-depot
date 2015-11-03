@@ -7,7 +7,11 @@ class LineItem < ActiveRecord::Base
 
   def total_price
     if product
-      product.price * quantity
+      if product.price
+        product.price * quantity
+      else
+        0
+      end
     else
       0
     end

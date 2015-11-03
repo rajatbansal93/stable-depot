@@ -11,9 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-
-ActiveRecord::Schema.define(version: 20151029115907) do
-
+ActiveRecord::Schema.define(version: 20151030082239) do
 
   create_table "addresses", force: :cascade do |t|
     t.string   "state",      limit: 255
@@ -114,6 +112,17 @@ ActiveRecord::Schema.define(version: 20151029115907) do
 
   add_index "products", ["category_id"], name: "index_products_on_category_id", using: :btree
 
+  create_table "ratings", force: :cascade do |t|
+    t.decimal  "rating",               precision: 3, scale: 2
+    t.integer  "product_id", limit: 4
+    t.integer  "user_id",    limit: 4
+    t.datetime "created_at",                                   null: false
+    t.datetime "updated_at",                                   null: false
+  end
+
+  add_index "ratings", ["product_id"], name: "index_ratings_on_product_id", using: :btree
+  add_index "ratings", ["user_id"], name: "index_ratings_on_user_id", using: :btree
+
   create_table "samples", force: :cascade do |t|
     t.string "name",        limit: 255
     t.string "part_number", limit: 255
@@ -122,13 +131,16 @@ ActiveRecord::Schema.define(version: 20151029115907) do
   create_table "users", force: :cascade do |t|
     t.string   "name",            limit: 255
     t.string   "password_digest", limit: 255
-    t.datetime "created_at",                  null: false
-    t.datetime "updated_at",                  null: false
+    t.datetime "created_at",                                   null: false
+    t.datetime "updated_at",                                   null: false
     t.string   "email",           limit: 255
+    t.string   "role",            limit: 255, default: "user"
   end
 
   add_foreign_key "addresses", "users"
   add_foreign_key "images", "products"
   add_foreign_key "orders", "users"
   add_foreign_key "products", "categories"
+  add_foreign_key "ratings", "products"
+  add_foreign_key "ratings", "users"
 end

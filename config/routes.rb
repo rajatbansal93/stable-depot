@@ -1,82 +1,63 @@
 Rails.application.routes.draw do
-  resources :categories
-  get 'admin' => 'admin#index'
-  controller :sessions do
-    get 'login' => :new
-    post 'login' => :create
-    delete 'logout'=> :destroy
-  end
 
-  resources :users do
-    collection do
-      get 'orders', to: :show_orders
-      get :line_items
+  # constraints lambda { |request|
+  #   p request.env['HTTP_USER_AGENT'].include? "Chrome"
+
+  # }
+  class Chrome
+    def matches?(request)
+      request.env['HTTP_USER_AGENT'].include? "Chrome"
     end
   end
 
-  resources :orders
-  resources :line_items
-  resources :carts
-  resources :cartes
-  resources :images
-  get 'store/index'
+  class Firefox
+    def matches?(request)
+      request.env['HTTP_USER_AGENT'].include? "Firefox"
+    end
+  end
 
-  # get 'users/orders', to: 'users#abc'
+  constraints Chrome.new do
 
-  resources :products
-  # The priority is based upon order of creation: first created -> highest priority.
-  # See how all your routes lay out with "rake routes".
+    resources :categories
 
-  # You can have the root of your site routed with "root"
-  root 'store#index', as: 'store'
+    controller :sessions do
+      get 'login' => :new
+      post 'login' => :create
+      delete 'logout'=> :destroy
+    end
 
+    get "/categories/:id/books", to: "products#index"
 
-  # Example of regular route:
-  #   get 'products/:id' => 'catalog#view'
+    namespace :admin do
+      resources :reports, only: [:index]
+      resources :categories
 
-  # Example of named route that can be invoked with purchase_url(id: product.id)
-  #   get 'products/:id/purchase' => 'catalog#purchase', as: :purchase
+    end
 
-  # Example resource route (maps HTTP verbs to controller actions automatically):
-  #   resources :products
+    resources :users do
+      collection do
+        get 'orders', to: :show_orders
+        get :line_items
+      end
+    end
 
-  # Example resource route with options:
-  #   resources :products do
-  #     member do
-  #       get 'short'
-  #       post 'toggle'
-  #     end
-  #
-  #     collection do
-  #       get 'sold'
-  #     end
-  #   end
+    get "my-orders", to: "users#show_orders"
+    get "my-items", to: "users#line_items"
 
-  # Example resource route with sub-resources:
-  #   resources :products do
-  #     resources :comments, :sales
-  #     resource :seller
-  #   end
+    resources :orders
+    resources :line_items
+    resources :carts
+    resources :cartes
+    resources :images
+    get 'store/index'
 
-  # Example resource route with more complex sub-resources:
-  #   resources :products do
-  #     resources :comments
-  #     resources :sales do
-  #       get 'recent', on: :collection
-  #     end
-  #   end
+    resources :products, path: 'books'
 
-  # Example resource route with concerns:
-  #   concern :toggleable do
-  #     post 'toggle'
-  #   end
-  #   resources :posts, concerns: :toggleable
-  #   resources :photos, concerns: :toggleable
+    root 'store#index', as: 'store'
+  end
 
-  # Example resource route within a namespace:
-  #   namespace :admin do
-  #     # Directs /admin/products/* to Admin::ProductsController
-  #     # (app/controllers/admin/products_controller.rb)
-  #     resources :products
-  #   end
+  constraints Firefox.new do
+    root 'store#index', as: 'firefox_store'
+  end
+
 end

@@ -27,7 +27,7 @@ class Product < ActiveRecord::Base
   # validates :price, numericality: {greater_than_or_equal_to: :discount_price}
 
 
-  before_destroy :ensure_not_referenced_by_any_line_item
+  # before_destroy :ensure_not_referenced_by_any_line_item
   after_initialize :ensure_default_title
   after_save :increment_count_in_cateogory
 

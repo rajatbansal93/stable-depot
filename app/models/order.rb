@@ -2,8 +2,8 @@ class Order < ActiveRecord::Base
   has_many :line_items, dependent: :destroy
   has_many :products, through: :line_items
   PAYMENT_TYPES = ["Check", "Credit card", "Purchase order"]
-  validates :name, :address, :email, presence: true
-  validates :pay_type, inclusion: PAYMENT_TYPES
+  # validates :name, :address, :email, presence: true
+  # validates :pay_type, inclusion: PAYMENT_TYPES
 
   scope :by_date, ->(from: Time.now.midnight, to: Time.now) do
     where(created_at: (from .. to))

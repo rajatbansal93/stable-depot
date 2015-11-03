@@ -1,12 +1,14 @@
 class UserNotifier < ApplicationMailer
 
-  # Subject can be set in your I18n file at config/locales/en.yml
-  # with the following lookup:
-  #
-  #   en.user_notifier.created.subject
-  #
+  default from: 'Rajat Bansal <rajat@vinsol.com>'
+
   def created(user)
     @user = user
     mail(to: @user.email, subject: 'account created succussfully')
+  end
+
+  def previous_orders(user)
+    @orders = user.orders
+    mail(to: user.email, subject: 'Your orders')
   end
 end

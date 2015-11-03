@@ -16,7 +16,7 @@ class User < ActiveRecord::Base
 
   before_update do |user|
     user.errors[:base] << "Cannot update admin"
-    user.email != 'admin@depot.com'
+    # user.email != 'admin@depot.com'
   end
 
   after_create do |user|
