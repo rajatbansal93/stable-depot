@@ -48,7 +48,7 @@ class OrdersController < ApplicationController
         @products = @order.products
         OrderNotifier.received(@order).deliver
 
-        format.html { redirect_to @order, notice: 'Thank you for your order.' }
+        format.html { redirect_to @order, notice: t(:thanks_for_order) }
         format.json { render :show, status: :created, location: @order }
       else
         format.html { render :new }
@@ -62,7 +62,7 @@ class OrdersController < ApplicationController
   def update
     respond_to do |format|
       if @order.update(order_params)
-        format.html { redirect_to @order, notice: 'Order was successfully updated.' }
+        format.html { redirect_to @order, notice: t(:order_updated) }
         format.json { render :show, status: :ok, location: @order }
       else
         format.html { render :edit }
@@ -76,7 +76,7 @@ class OrdersController < ApplicationController
   def destroy
     @order.destroy
     respond_to do |format|
-      format.html { redirect_to orders_url, notice: 'Order was successfully destroyed.' }
+      format.html { redirect_to orders_url, notice: t(:order_destroyed) }
       format.json { head :no_content }
     end
   end

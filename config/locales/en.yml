@@ -1,23 +1,15 @@
-# Files in the config/locales directory are used for internationalization
-# and are automatically loaded by Rails. If you want to use locales other
-# than English, add the necessary files in this directory.
-#
-# To use the locales, use `I18n.t`:
-#
-#     I18n.t 'hello'
-#
-# In views, this is aliased to just `t`:
-#
-#     <%= t('hello') %>
-#
-# To use a different locale, set it with `I18n.locale`:
-#
-#     I18n.locale = :es
-#
-# This would use the information in config/locales/es.yml.
-#
-# To learn more, please read the Rails Internationalization guide
-# available at http://guides.rubyonrails.org/i18n.html.
-
 en:
-  hello: "Hello world"
+  your_order_contains: Your order Contains.
+  logged_out: You Logged out successfuly.
+  cart_created: Cart was successfully created
+  cart_updated: Cart was successfully updated
+  cart_destroyed: Cart was successfully destroyed
+  line_item_created: line item was created successfully
+  line_item_updated: line item was updated successfully
+  thanks_for_order: Thanks for your order
+  order_updated: Your Order was updated successfully
+  order_destroyed: Your Order was destroyed successfully
+  order_created: Your Order was created successfully
+  product_created: Product was created successfully
+  product_updated: Product was updated successfully
+  product_destroyed: Product was destroyed successfully

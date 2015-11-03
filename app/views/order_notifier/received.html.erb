@@ -1,4 +1,4 @@
-<h1>Your Order contains</h1>
+<h1><%= t :your_order_contains %></h1>
 <table>
   <% @products.includes(:images).each do |product| %>
     <tr class="<%= cycle('list_line_odd', 'list_line_even') %>">
